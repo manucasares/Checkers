@@ -31,7 +31,7 @@ html, body {
 
 .turn > div.active-turn {
     color: white;
-    transition: color 1s linear;
+    transition: color .7s linear;
 }
 
 .board {

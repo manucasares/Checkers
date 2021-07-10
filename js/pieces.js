@@ -1,6 +1,7 @@
 import { pieces } from '../data/pieces.js';
-import { findPieceByPosition } from './helpers.js';
+import { findPieceByPosition, getSquaresIndexed } from './helpers.js';
 import { main } from './main.js';
+import { getPossibleMoves } from './moves.js';
 import { changeTurn } from './turns.js';
 import { removeActiveBorder } from './ui.js';
 
@@ -10,12 +11,7 @@ let activePiece = null;
 export function setPieces ( squares ) {
     
     // Indexamos las piezas para poder acceder por su posición fácilmente
-    const squaresIndexed = squares.reduce( ( squaresIndexed, square ) => {
-        return {
-            ...squaresIndexed,
-            [ square.dataset.position ]: square
-        }        
-    }, {} )
+    const squaresIndexed = getSquaresIndexed( squares );
 
     // Por cada square con pieza ponemos atributos y clases
     pieces.forEach( piece => {
@@ -41,6 +37,8 @@ export function setActivePiece ( e ) {
 
     // Agregamos borde amarillo
     piece.classList.add( 'active' );
+
+
 }
 
 export function movePiece ( e ) {
@@ -49,12 +47,22 @@ export function movePiece ( e ) {
     if ( activePiece ) {
 
         const position = activePiece.dataset.position;
+        const landingSquare = e.target.dataset.position;
 
         // Buscamos pieza a mover
         const pieceToMove = findPieceByPosition( pieces, position );
-        
+
+        // Calculamos posibles movimientos
+        const moves = getPossibleMoves( pieceToMove );
+            
+        // Si el movimiento no es legal retornamos
+        if ( !moves.includes( landingSquare ) ) {
+            console.log('illegal')
+            return;
+        }
+
         // La movemos
-        pieceToMove.square = e.target.dataset.position;
+        pieceToMove.square = landingSquare;
         
         // Active piece
         activePiece = null;

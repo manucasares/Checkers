@@ -20,10 +20,10 @@ export const initialPieces = [
     { id: 17, team: 'red', square: '12' },
     { id: 18, team: 'red', square: '14' },
     { id: 19, team: 'red', square: '16' },
-    { id: 20, team: 'red', square: '21' },
-    { id: 21, team: 'red', square: '23' },
+    { id: 20, team: 'red', square: '32' },
+    { id: 21, team: 'red', square: '43' },
     { id: 22, team: 'red', square: '25' },
-    { id: 23, team: 'red', square: '27' },
+    { id: 23, team: 'red', square: '45' },
 ]
 
 // Hacemos una deep copy así conservamos la posición inicial

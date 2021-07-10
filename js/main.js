@@ -7,7 +7,6 @@ import { listeners } from './listeners.js';
 const board = document.querySelector( '#board' ); 
 
 
-
 const squares = createBoard( board );
 
 
