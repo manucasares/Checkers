@@ -1,6 +1,7 @@
 import { resetBoard, createBoard } from './board.js';
-import { addPieceListeners, addSquareListener, getTurn, setPieces } from './pieces.js';
-import { initialPieces } from '../data/pieces.js';
+import { setPieces } from './pieces.js';
+import { getTurn } from './turns.js';
+import { listeners } from './listeners.js';
 
 // Referencias HTML
 const board = document.querySelector( '#board' ); 
@@ -10,7 +11,7 @@ const board = document.querySelector( '#board' );
 const squares = createBoard( board );
 
 
-function main () {
+export function main () {
 
     // Obtenemos el turno
     const turn = getTurn();
@@ -21,12 +22,8 @@ function main () {
     // Seteamos las piezas
     setPieces( squares );
 
-    // Agregamos listener a las piezas
-    addPieceListeners( squares, turn );
-
-    // Agregamos listener a los squares
-    addSquareListener( squares );
-
+    // Listeners
+    listeners( squares, turn )
 }
 
 

@@ -1,9 +1,11 @@
 import { pieces } from '../data/pieces.js';
 import { findPieceByPosition } from './helpers.js';
+import { main } from './main.js';
+import { changeTurn } from './turns.js';
+import { removeActiveBorder } from './ui.js';
+
 
 let activePiece = null;
-let turn = 'black';
-
 
 export function setPieces ( squares ) {
     
@@ -23,25 +25,9 @@ export function setPieces ( squares ) {
     });
 }
 
-export function addPieceListeners ( squares ) {
-    
-    const occupiedSquares = squares.filter( square => square.dataset.occupied );
-    const turnOccupiedSquares = occupiedSquares.filter( square => square.classList.contains( `piece-${ turn }` ) );
 
-    turnOccupiedSquares.forEach( square => {
-        square.addEventListener( 'click', setActivePiece )
-    });
-}
 
-export function addSquareListener ( squares ) {
-    const emptySquares = squares.filter( square => !square.dataset.occupied );
-
-    emptySquares.forEach( square => {
-        square.addEventListener( 'click', movePiece );
-    });
-}
-
-function setActivePiece ( e ) {
+export function setActivePiece ( e ) {
     
     // Quitamos borde amarillo a la piece active pasada, si la hay...
     if ( activePiece ) {
@@ -52,12 +38,12 @@ function setActivePiece ( e ) {
 
     // Seteamos active piece
     activePiece = piece;
-    
+
     // Agregamos borde amarillo
     piece.classList.add( 'active' );
 }
 
-function movePiece ( e ) {
+export function movePiece ( e ) {
     
     // Si hay una pieza seleccionada
     if ( activePiece ) {
@@ -66,14 +52,17 @@ function movePiece ( e ) {
 
         // Buscamos pieza a mover
         const pieceToMove = findPieceByPosition( pieces, position );
-
+        
         // La movemos
-        pieceToMove.square = e.target.dataset.position;        
-    }
-}
+        pieceToMove.square = e.target.dataset.position;
+        
+        // Active piece
+        activePiece = null;
+        removeActiveBorder();
 
-export function getTurn () {
-    const turnElement = document.querySelector( '#turn' ); 
-    turn = turnElement.dataset.turn;
-    return turn;
+        // Turn
+        changeTurn();
+        
+        main();
+    }
 }
