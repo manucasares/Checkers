@@ -57,13 +57,18 @@ export function movePiece ( e ) {
             
         // Si el movimiento no es legal retornamos
         if ( !moves.includes( landingSquare ) ) {
-            console.log('illegal')
+            console.log('Illegal')
             return;
         }
 
         // La movemos
         pieceToMove.square = landingSquare;
-        
+
+        // Chequeamos si está comiendo
+        if ( isEating( position, landingSquare ) ) {
+            eatPiece( position, landingSquare );
+        }
+
         // Active piece
         activePiece = null;
         removeActiveBorder();
@@ -73,4 +78,25 @@ export function movePiece ( e ) {
         
         main();
     }
+}
+
+function isEating ( position, landingSquare ) {
+    // Si la diferencia de row entre position y el landingSquare es 2, está comiendo
+    return Math.abs( position[0] - landingSquare[0] ) === 2;
+}
+
+function eatPiece ( initialPosition, landingPosition ) {
+    // Para saber el square de la pieza a comer haremos un promedio de la row y la column
+    // tanto de la position como del landinSquare
+    const row = ( +initialPosition[ 0 ] + +landingPosition[ 0 ] ) / 2;
+    const column = ( +initialPosition[ 1 ] + +landingPosition[ 1 ] ) / 2;
+    const eatenPiecePosition = `${ row }${ column }`;
+
+    const eatenPiece = findPieceByPosition( pieces, eatenPiecePosition );
+
+    // Buscamos index para borrarla con splice a continuación
+    const eatenPieceIdx = pieces.findIndex( p => p.id === eatenPiece.id );
+
+    // La borramos
+    pieces.splice( eatenPieceIdx, 1 );
 }

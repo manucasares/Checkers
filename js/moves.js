@@ -9,9 +9,11 @@ export function getPossibleMoves ( piece ) {
     const squaresIndexed = getSquaresIndexed( squares );
     const board_direction = ( turn === 'black' ) ? -1 : 1;
     
+
     const forwardSquares = getForwardSquares( piece, squaresIndexed, board_direction );
     const eatingMoves = getEatingMoves( forwardSquares, turn, squaresIndexed, board_direction );
 
+    
     const moves = [ ...forwardSquares, ...eatingMoves ];
     const cleanedMoves = cleanMoves( moves );
     
