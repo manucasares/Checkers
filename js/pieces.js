@@ -1,5 +1,5 @@
 import { pieces } from '../data/pieces.js';
-import { findPieceByPosition, getSquaresIndexed } from './helpers.js';
+import { findPieceByPosition, findPieceIndex, getSquaresIndexed } from './helpers.js';
 import { main } from './main.js';
 import { getPossibleMoves } from './moves.js';
 import { changeTurn } from './turns.js';
@@ -15,9 +15,14 @@ export function setPieces ( squares ) {
 
     // Por cada square con pieza ponemos atributos y clases
     pieces.forEach( piece => {
-        squaresIndexed[ piece.square ].classList.add( `piece` )
-        squaresIndexed[ piece.square ].classList.add( `piece-${ piece.team }` )
+        squaresIndexed[ piece.square ].classList.add( `piece` );
+        squaresIndexed[ piece.square ].classList.add( `piece-${ piece.team }` );
         squaresIndexed[ piece.square ].setAttribute( 'data-occupied', 'true' );
+
+        // Si la pieza está coronada
+        if ( piece.castled ) {
+            squaresIndexed[ piece.square ].classList.add( `is-castled` );
+        }
     });
 }
 
@@ -47,7 +52,7 @@ export function movePiece ( e ) {
     if ( activePiece ) {
 
         const position = activePiece.dataset.position;
-        const landingSquare = e.target.dataset.position;
+        const landingPosition = e.target.dataset.position;
 
         // Buscamos pieza a mover
         const pieceToMove = findPieceByPosition( pieces, position );
@@ -56,17 +61,22 @@ export function movePiece ( e ) {
         const moves = getPossibleMoves( pieceToMove );
             
         // Si el movimiento no es legal retornamos
-        if ( !moves.includes( landingSquare ) ) {
+        if ( !moves.includes( landingPosition ) ) {
             console.log('Illegal')
             return;
         }
 
         // La movemos
-        pieceToMove.square = landingSquare;
+        pieceToMove.square = landingPosition;
+
+        // Chequeamos por castling
+        if ( isCastling( landingPosition ) ) {
+            castlePiece( pieceToMove );
+        }
 
         // Chequeamos si está comiendo
-        if ( isEating( position, landingSquare ) ) {
-            eatPiece( position, landingSquare );
+        if ( isEating( position, landingPosition ) ) {
+            eatPiece( position, landingPosition );
         }
 
         // Active piece
@@ -95,8 +105,19 @@ function eatPiece ( initialPosition, landingPosition ) {
     const eatenPiece = findPieceByPosition( pieces, eatenPiecePosition );
 
     // Buscamos index para borrarla con splice a continuación
-    const eatenPieceIdx = pieces.findIndex( p => p.id === eatenPiece.id );
+    // const eatenPieceIdx = pieces.findIndex( p => p.id === eatenPiece.id );
+    const eatenPieceIdx = findPieceIndex( pieces, eatenPiece.id );
 
-    // La borramos
     pieces.splice( eatenPieceIdx, 1 );
+}
+
+function isCastling ( landingPosition ) {
+    // Si la row es la última sin importar el turno significa que está coronándose
+    return landingPosition[ 0 ] === '7' || landingPosition[ 0 ] === '0';
+}
+
+function castlePiece ( pieceToCastle ) {
+    
+    const pieceIndex = findPieceIndex( pieces, pieceToCastle.id );
+    pieces[ pieceIndex ].castled = true;
 }

@@ -82,3 +82,7 @@ html, body {
 .black {
     background-color: rgb(36, 36, 36);
 }
+
+.is-castled::before {
+    border-style: dashed;
+}
