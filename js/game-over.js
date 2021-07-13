@@ -8,15 +8,15 @@ const play_again = document.querySelector( '#play_again' );
 
 export function checkForWin ( pieces ) {
     
-    const opossiteTurn = getOpossiteTurn();
+    const turn = getTurn();
 
     // Si ya no hay piezas del team opuesto
-    return pieces.filter( piece => piece.team === opossiteTurn ).length === 0;
+    return pieces.filter( piece => piece.team === turn ).length === 0;
 }
 
 export function gameOverUi () {
     
-    const turn = getTurn();
+    const turn = getOpossiteTurn();
 
     // Sacamos la capacidad de mover piezas
     takeOutPointerEvents();

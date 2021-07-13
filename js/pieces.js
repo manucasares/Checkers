@@ -93,7 +93,7 @@ export function movePiece ( e ) {
 
         // Chequeamos por win
         if ( checkForWin( pieces ) ) {
-            
+            console.log('entra')
             // Game over UI
             gameOverUi();
 

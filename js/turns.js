@@ -8,9 +8,8 @@ export function getTurn () {
 }
 
 export function getOpossiteTurn () {
-    const turnElement = document.querySelector( '#turn' ); 
-    let turn = turnElement.dataset.turn === 'black' ? 'red' : 'black';
-    return turn;
+    const opossiteTurn = getTurn() === 'black' ? 'red': 'black';
+    return opossiteTurn;
 }
 
 export function changeTurn () {
