@@ -10,6 +10,7 @@ html, body {
     background-color: #3a2038;
     min-height: 100vh;
     font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
 }
 
 .content {
@@ -32,6 +33,7 @@ html, body {
 .turn > div.active-turn {
     color: white;
     transition: color .7s linear;
+    
 }
 
 .board {
@@ -85,4 +87,30 @@ html, body {
 
 .is-castled::before {
     border-style: dashed;
+}
+
+.game-over {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    padding: 2rem;
+    text-align: center;
+    font-size: clamp(14px, 4vw, 30px);
+    color: white;
+    background-color: rgba(0, 0, 0, .6);
+    border-radius: 10px;
+    z-index: 100;
+}
+
+.play-again {
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 2rem;
 }

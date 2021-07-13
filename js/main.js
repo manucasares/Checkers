@@ -22,7 +22,7 @@ export function main () {
     setPieces( squares );
 
     // Listeners
-    listeners( squares, turn )
+    listeners( squares, turn );
 }
 
 

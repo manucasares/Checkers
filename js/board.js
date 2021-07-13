@@ -1,5 +1,4 @@
 
-
 export function createBoard ( board ) {
     
     // Rows
@@ -36,5 +35,4 @@ export function resetBoard ( squares ) {
         square.classList.remove( 'piece-red' )
         square.removeAttribute( 'data-occupied' );
     });
-
 }

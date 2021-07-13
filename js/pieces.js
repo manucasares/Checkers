@@ -1,8 +1,9 @@
 import { pieces } from '../data/pieces.js';
+import { checkForWin, gameOverUi } from './game-over.js';
 import { findPieceByPosition, findPieceIndex, getSquaresIndexed } from './helpers.js';
 import { main } from './main.js';
 import { getPossibleMoves } from './moves.js';
-import { changeTurn } from './turns.js';
+import { changeToBlackTurn, changeTurn } from './turns.js';
 import { removeActiveBorder } from './ui.js';
 
 
@@ -25,8 +26,6 @@ export function setPieces ( squares ) {
         }
     });
 }
-
-
 
 export function setActivePiece ( e ) {
     
@@ -83,9 +82,23 @@ export function movePiece ( e ) {
         activePiece = null;
         removeActiveBorder();
 
+        // Chequeamos por win
+        if ( checkForWin( pieces ) ) {
+            
+            // Game over UI
+            gameOverUi();
+
+            // Cambiamos turno a negras
+            changeToBlackTurn();
+            
+            // Hacemos un último render
+            main();
+            return;
+        }
+
         // Turn
         changeTurn();
-        
+
         main();
     }
 }
