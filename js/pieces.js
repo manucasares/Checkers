@@ -61,7 +61,6 @@ export function movePiece ( e ) {
             
         // Si el movimiento no es legal retornamos
         if ( !moves.includes( landingPosition ) ) {
-            console.log('Illegal')
             return;
         }
 
@@ -88,9 +87,6 @@ export function movePiece ( e ) {
             changeTurn();
         }
             
-
-        
-        
         // Active piece
         activePiece = null;
         removeActiveBorder();
