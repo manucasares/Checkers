@@ -2,7 +2,7 @@ import { getSquaresIndexed } from './helpers.js';
 import { getTurn } from './turns.js';
 
 
-export function getPossibleMoves ( piece ) {
+export function getPossibleMoves ( piece, options = {} ) {
 
     const turn = getTurn();
     const squares = [ ...document.querySelectorAll( '.square' ) ];
@@ -13,8 +13,8 @@ export function getPossibleMoves ( piece ) {
     const forwardSquares = getForwardMoves( piece, squaresIndexed, board_direction );
     const eatingMoves = getEatingMoves( forwardSquares, turn, squaresIndexed, board_direction, piece.castled );
 
-    
-    const moves = [ ...forwardSquares, ...eatingMoves ];
+    // Consideramos la opción de retornar solo las eatingMoves
+    const moves = options.onlyEatingMoves ? [ ...eatingMoves ] : [ ...forwardSquares, ...eatingMoves ];
     const cleanedMoves = cleanMoves( moves );
     
     // Pasamos de tener un arr de nodes a un arr de strings

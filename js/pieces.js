@@ -76,8 +76,21 @@ export function movePiece ( e ) {
         // Chequeamos si está comiendo
         if ( isEating( position, landingPosition ) ) {
             eatPiece( position, landingPosition );
-        }
 
+            // Si no puede seguir comiendo cambiamos el turno
+            const canEat = !!getPossibleMoves( pieceToMove, { onlyEatingMoves: true } ).length;
+            if ( !canEat ) {
+                changeTurn();
+            }
+            
+        } else {
+            // Si no comió estamos seguros de que tenemos que cambiar el turno
+            changeTurn();
+        }
+            
+
+        
+        
         // Active piece
         activePiece = null;
         removeActiveBorder();
@@ -96,8 +109,6 @@ export function movePiece ( e ) {
             return;
         }
 
-        // Turn
-        changeTurn();
 
         main();
     }
